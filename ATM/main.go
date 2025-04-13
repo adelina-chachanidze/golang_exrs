@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -14,7 +13,7 @@ func getBalanceFromFile () (float64, error) {
 
 	//nil - absence of a useful value
 	if err != nil {
-		errors.New("Failed to read file")
+		fmt.Println("Error:", err)
 		return 0, err
 	}
 
@@ -22,7 +21,8 @@ func getBalanceFromFile () (float64, error) {
 	balance, err := strconv.ParseFloat(balanceText, 64)
 
 	if err != nil {
-		errors.New("Failed to parse the data")
+		fmt.Println("Error:", err)
+		return 0, err
 	}
 
 	return balance, nil
