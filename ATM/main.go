@@ -1,11 +1,46 @@
 package main
 
 import (
+	"errors"
 	"fmt"
+	"os"
+	"strconv"
 )
 
+const balanceFile = "balance.txt"
+
+func getBalanceFromFile () (float64, error) {
+	data, err :=os.ReadFile(balanceFile)
+
+	//nil - absence of a useful value
+	if err != nil {
+		errors.New("Failed to read file")
+		return 0, err
+	}
+
+	balanceText := string(data)
+	balance, err := strconv.ParseFloat(balanceText, 64)
+
+	if err != nil {
+		errors.New("Failed to parse the data")
+	}
+
+	return balance, nil
+}
+
+func writeBalanceToFile (balance float64) {
+	balanceText := fmt.Sprint(balance)
+	//0644: owner of the file can read and write, and others only read
+	os.WriteFile(balanceFile, []byte(balanceText), 0644)
+}
+
 func main() {
-	var balance float64 = 1000.00
+	var balance, err  = getBalanceFromFile()
+
+	if err != nil {
+		fmt.Println("Error:", err)
+		return	
+	}
 
 	fmt.Println("Welcome to the ATM!")
 
@@ -17,16 +52,17 @@ func main() {
 		fmt.Println("3. Withdraw")
 		fmt.Println("4. Exit")
 
+		fmt.Print("Enter your choice: ")
+
 		var choice int
-		fmt.Print("Type 1-4 to choose: ")
 		fmt.Scan(&choice)
 
 		switch choice {
 		case 1:
-			fmt.Println("Your balance:", balance)
+			fmt.Println("\nYour balance:", balance)
 
 		case 2:
-			fmt.Println("Enter your deposit: ")
+			fmt.Println("\nEnter your deposit: ")
 			var deposit float64
 			fmt.Scan(&deposit)
 
@@ -36,10 +72,11 @@ func main() {
 			}
 
 			balance += deposit
-			fmt.Println("Deposit complete!\nYour new balance:", balance)
+			fmt.Println("\nDeposit complete!\nYour new balance:", balance)
+			writeBalanceToFile(balance)
 
 		case 3:
-			fmt.Println("Enter your withdrawal amount: ")
+			fmt.Println("\nEnter your withdrawal amount: ")
 			var withdraw float64
 			fmt.Scan(&withdraw)
 
@@ -54,10 +91,11 @@ func main() {
 			}
 
 			balance -= withdraw
-			fmt.Println("Withdrawal complete!\nYour new balance:", balance)
+			fmt.Println("\nWithdrawal complete!\nYour new balance:", balance)
+			writeBalanceToFile(balance)
 
 		default:
-			fmt.Println("Thank you for using our ATM! Come back soon!")
+			fmt.Println("\nThank you for using our ATM! Come back soon!")
 			return
 		}
 	}
