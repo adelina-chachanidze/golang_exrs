@@ -93,10 +93,14 @@ func main() {
 			balance -= withdraw
 			fmt.Println("\nWithdrawal complete!\nYour new balance:", balance)
 			writeBalanceToFile(balance)
-
-		default:
+		
+		case 4: 
 			fmt.Println("\nThank you for using our ATM! Come back soon!")
 			return
+
+
+		default:
+			fmt.Println("\nInvalid input, please choose 1-4")
 		}
 	}
 }
