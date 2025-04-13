@@ -4,9 +4,10 @@ import "fmt"
 
 func main () {
 	var balance float64 = 1000.00
+	fmt.Println("Welcome to the ATM!")
 
-
-	fmt.Println("Welcome to the ATM!\nPlease select the action")
+	for {
+	fmt.Println("Please select the action")
 	fmt.Println("\n1. Check your balance")
 	fmt.Println("2. Deposit")
 	fmt.Println("3. Withdraw")
@@ -28,29 +29,32 @@ func main () {
 		fmt.Scan(&deposit)
 			if deposit <=0 {
 				fmt.Println("Invalid amount. Minimal deposit: 0.01")
-				return
+				continue
 			}
 		balance += deposit
-		fmt.Println("Deposit complete!\nYour new balance:", balance)
+		fmt.Println("\nDeposit complete!\nYour new balance:", balance)
 
 	} else if choice == 3 {
-		fmt.Println("Enter your withdrawl amount: ")
+		fmt.Println("\nEnter your withdrawl amount: ")
 		var withdraw float64
 		fmt.Scan(&withdraw)
 			if withdraw <=0 {
-				fmt.Println("Invalid amount. Minimal withdrawl: 0.01")
-				return
+				fmt.Println("\nInvalid amount. Minimal withdrawl: 0.01")
+				continue
 			}
 
 			if withdraw > balance {
-				fmt.Println("Not enough to withdraw, availabe balance:", balance)
-				return
+				fmt.Println("\nNot enough to withdraw, availabe balance:", balance)
+				continue
 			} 
 			
 		balance -= withdraw
-		fmt.Println("Withdrawl complete!\nYour new balance:", balance)
+		fmt.Println("\nWithdrawl complete!\nYour new balance:", balance)
 
 	} else {
 		fmt.Println("Thank you for using our ATM! Come back soon!")
+		break
 	}
+	}
+	
 }
